@@ -471,9 +471,10 @@
 <script>
     function toggleVehicleDropdown() {
         const menu = document.getElementById('vehicleDropdownMenu');
-        menu.classList.toggle('hidden');
         const btn = document.getElementById('vehicleDropdown');
         const expanded = btn.getAttribute('aria-expanded') === 'true';
+
+        menu.classList.toggle('hidden');
         btn.setAttribute('aria-expanded', !expanded);
     }
 
@@ -484,27 +485,38 @@
         document.getElementById('vehicleDropdown').setAttribute('aria-expanded', false);
     }
 
-    // Clear filters
-    document.getElementById('clearFiltersBtn').addEventListener('click', function() {
-        // Reset form fields
-        document.getElementById('filterForm').reset();
+    function filterVehicles() {
+        const input = document.getElementById('vehicleSearchInput').value.toLowerCase();
+        const items = document.querySelectorAll('.vehicle-option');
 
-        // Reset vehicle dropdown manually
-        document.getElementById('selectedVehicle').innerText = 'All Vehicles';
-        document.getElementById('vehicleInput').value = '';
-
-        // Optionally: Submit form after clearing
-        document.getElementById('filterForm').submit();
-    });
+        items.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(input) ? 'block' : 'none';
+        });
+    }
 
     document.addEventListener('click', function(e) {
-        const vehicleBtn = document.getElementById('vehicleDropdown');
-        const vehicleMenu = document.getElementById('vehicleDropdownMenu');
-        if (!vehicleBtn.contains(e.target) && !vehicleMenu.contains(e.target)) {
-            vehicleMenu.classList.add('hidden');
-            vehicleBtn.setAttribute('aria-expanded', false);
+        const dropdownBtn = document.getElementById('vehicleDropdown');
+        const dropdownMenu = document.getElementById('vehicleDropdownMenu');
+
+        if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+            dropdownMenu.classList.add('hidden');
+            dropdownBtn.setAttribute('aria-expanded', false);
         }
     });
+
+    // Optional: Reset filters
+    const clearBtn = document.getElementById('clearFiltersBtn');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function() {
+            document.getElementById('filterForm').reset();
+            document.getElementById('selectedVehicle').innerText = 'All Vehicles';
+            document.getElementById('vehicleInput').value = '';
+            document.getElementById('vehicleDropdownMenu').classList.add('hidden');
+            document.getElementById('vehicleDropdown').setAttribute('aria-expanded', false);
+            document.getElementById('filterForm').submit();
+        });
+    }
 </script>
 
 <script>
