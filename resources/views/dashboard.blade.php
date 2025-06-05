@@ -19,15 +19,14 @@
             </div>
 
             <!-- Services Due Modal -->
-            <div x-data="{ showModal: false }">
-                <div class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-2xl p-6 shadow-xl hover:scale-105 transform transition-all cursor-pointer"
-                    @click="showModal = true">
+            <div>
+                <div class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-2xl p-6 shadow-xl hover:scale-105 transform transition-all cursor-pointer">
                     <div class="flex items-center mb-2">
                         <i data-lucide="alert-circle" class="w-6 h-6 mr-2"></i>
                         <h4 class="text-xl font-semibold">Vehicles with Services Due</h4>
                     </div>
 
-                    <div class=" flex ">
+                    <div class="flex">
                         <p class="text-4xl font-bold ml-16 mr-10 mt-5">{{ $dueServices->count() }}</p>
                         <button onclick="downloadDueServicesPDF()"
                             class="flex items-center gap-2 h-10 mt-5 px-4 py-2 bg-white text-orange-600 border border-orange-500 rounded-full text-sm font-semibold shadow-md hover:bg-orange-100 transition">
@@ -38,38 +37,14 @@
                             </svg>
                             Download PDF
                         </button>
-
                     </div>
-                </div>
 
-                <!-- Modal -->
-                <div x-show="showModal" x-cloak x-transition:enter="transition ease-out duration-300"
-                    x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
-                    x-transition:leave="transition ease-in duration-200"
-                    x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90"
-                    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-                    @click.outside="showModal = false">
-                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-xl shadow-xl">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-xl font-semibold text-gray-800 dark:text-white">Due Services</h3>
-                            <button @click="showModal = false"
-                                class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-2xl">
-                                &times;
-                            </button>
-                        </div>
-                        <ul id="dueServiceList"
-                            class="space-y-2 max-h-80 overflow-y-auto text-gray-700 dark:text-gray-100">
-                            @foreach ($dueServices as $service)
-                                <li>{{ $service->vehicle->license_plate }} - {{ $service->next_service_mileage }}</li>
-                            @endforeach
-                        </ul>
-                        <div class="mt-6 text-right">
-                            <button onclick="downloadDueServicesPDF()"
-                                class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                                Download PDF
-                            </button>
-                        </div>
-                    </div>
+                    <!-- Hidden list for PDF data -->
+                    <ul id="dueServiceList" class="hidden">
+                        @foreach ($dueServices as $service)
+                            <li>{{ $service->vehicle->license_plate }} - {{ $service->next_service_mileage }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
 
